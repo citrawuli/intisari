@@ -26,6 +26,11 @@ Route::get('/', function () {
     return view('template.dashboard');
 });
 
+Route::get('/loginWithAPI', function () {
+    return view('menu4.loginAPI');
+});
+
+
 Route::get('/download', function () {
 	$filepath=public_path()."/downloadable_file.pdf";
 	$filename="Dokumentasi dan User Manual.pdf";
@@ -62,3 +67,7 @@ Route::get('/TitikKunjungan', 'Toko@viewTitikKunjungan'); // View Titik Kunjunga
 Route::post('/storeToko', 'Toko@store'); // Store Titik Awal
 Route::get('/getBarcode/{id}', 'Toko@getBarcode'); // Store Titik Awal
 Route::get('/printBarcodeToko/{barcode}', 'Toko@printBarcodeToko'); //View Laman Print
+
+Route::get('/export', 'MyController@export')->name('export');
+Route::get('/importExportView', 'MyController@importExportView');
+Route::post('/import', 'MyController@import')->name('import');
