@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\Customer;
+use App\Models\Customeer;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -25,8 +25,8 @@ class UsersImport implements ToModel, WithHeadingRow, WithValidation, WithBatchI
     {
         //dump($row);
 
-        return new Customer([
-        	'id_customer' => @$row[0] ?? $row['id_customer'] ?? null,
+        return new Customeer([
+        	'id_customeer' => @$row[0] ?? $row['id_customer'] ?? null,
 	    	'nama_customer' => @$row[1] ?? $row['nama'] ?? $row['nama_lengkap'],
 	    	'alamat_customer' => @$row[2] ?? $row['alamat'] ?? null,
 	    	'id_kelurahan' => @$row[3] ?? $row['kodepos'] ?? null,
@@ -41,7 +41,7 @@ class UsersImport implements ToModel, WithHeadingRow, WithValidation, WithBatchI
     public function rules(): array
     {
         return [
-        	'*.id_customer' => 'unique:customer,id_customer',
+        	'*.id_customer' => 'unique:customeer,id_customeer',
             '*.alamat' => 'required',
             '*.kodepos' => 'required',
         ];

@@ -9,12 +9,15 @@ use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
 use Maatwebsite\Excel\Validators\Failure;
 use Session;
+use DB;
 
 
 class MyController extends Controller
 {
     public function importExportView() {
-        return view('menu5.excel');
+        $customeer = DB::table('customeer')->get();
+        //dump($customeer);        
+        return view('menu5.excel', ['customeer'=>$customeer]);
     }
 
     public function export() {
