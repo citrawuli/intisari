@@ -79,6 +79,20 @@
                                     <li><a href="{{ url('/TitikKunjungan') }}">Input Titik Kunjungan</a></li>
                                 </ul>
                             </li>
+                            <li>
+                                <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-external-link-square"></i><span>API
+                                    </span></a>
+                                <ul class="collapse">
+                                    <li><a href="{{ url('/loginWithAPI') }}">Google API's Log In</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-file-excel-o"></i><span>Laravel Excel
+                                    </span></a>
+                                <ul class="collapse">
+                                    <li><a href="{{ url('/importExportView') }}">Excel Customer</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </nav>
                 </div>
