@@ -71,3 +71,9 @@ Route::get('/printBarcodeToko/{barcode}', 'Toko@printBarcodeToko'); //View Laman
 Route::get('/export', 'MyController@export')->name('export');
 Route::get('/importExportView', 'MyController@importExportView');
 Route::post('/import', 'MyController@import')->name('import');
+
+Route::get('/theScoreboard', 'Scoreboard@viewscoreboard'); // View Scoreboard
+Route::get('/theScoreboardController', 'Scoreboard@viewscoreboardcontroller'); // View Scoreboard Controller
+Route::post('/editScoreBoard/{id}', 'Scoreboard@editscoreboard');//post form to DB, add new scoreboard
+Route::get('/getScoreBoard', 'Scoreboard@getscoreboard'); //AJAX
+Route::post('/editScoreboardEvent/{id}', 'Scoreboard@editscoreboardevent'); //AJAX

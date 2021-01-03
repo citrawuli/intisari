@@ -93,6 +93,14 @@
                                     <li><a href="{{ url('/importExportView') }}">Excel Customer</a></li>
                                 </ul>
                             </li>
+                            <li>
+                                <a href="javascript:void(0)" aria-expanded="true"><i class="ti-basketball"></i><span>The Tournament Scoreboard
+                                    </span></a>
+                                <ul class="collapse">
+                                    <li><a href="{{ url('/theScoreboard') }}">Basketball Scoreboard</a></li>
+                                    <li><a href="{{ url('/theScoreboardController') }}">Basketball Scoreboard Controller</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </nav>
                 </div>
