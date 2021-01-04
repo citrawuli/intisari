@@ -82,7 +82,12 @@
                        </div>
 
 	      			<button type="button" class="btn btn btn-outline-warning btn-lg mb-3" id="buzzer" > 
+	      				<p class="card-title" id="buzzeer" hidden="">0</p>
 	      				<i class="fa fa-bullhorn" style="font-size: 20px;margin-right: 5px"></i>SOUND BUZZER
+	      			</button>
+
+	      			<button class="btn btn btn-outline-danger btn-lg mb-3" type="button" id="resetscorebutton">
+	      				<i class="fa fa-refresh" style="font-size: 20px;margin-right: 5px"></i>RESET
 	      			</button>
 
 	      			<a type="button" class="btn btn btn-outline-info btn-lg mb-3" href="{{url('theScoreboard')}}" target="_blank">
@@ -138,7 +143,7 @@
 
 							<div class="card-body text-center text-dark bg-warning mb-3">
 							    <h5 class="card-title">POSS</h5>
-							    <p class="card-title" id="itisposs" hidden="">0</p>
+							    <p class="card-title" id="itisposs" hidden="">2</p>
 							    <i class="fa fa-arrow-circle-left possdata" style="text-shadow: 1px 1px 1px black;color:red;font-size: 50px;" id="noneposshome"></i>
 							    <i class="fa fa-arrow-circle-right possdata"style="text-shadow: 1px 1px 1px black;color:red;font-size: 50px;" id="nonepossguest"></i>
 							    
@@ -149,7 +154,7 @@
 
 							<div class="card-body text-center text-dark bg-warning mb-3">
 							    <h5 class="card-title" >BONUS</h5>
-							    <p class="card-title" id="itisbonus" hidden="">0</p>
+							    <p class="card-title" id="itisbonus" hidden="">2</p>
 							    <i class="fa fa-arrow-circle-left bonusdata" style="text-shadow: 1px 1px 1px black;color:red;font-size: 50px;" id="nonebonushome"></i>
 							    <i class="fa fa-arrow-circle-right bonusdata"style="text-shadow: 1px 1px 1px black;color:red;font-size: 50px;" id="nonebonusguest"></i>
 							    
@@ -208,6 +213,24 @@
 			})
 		});
 	});
+
+	$(document).ready(function() {
+		$.ajaxSetup({ headers: { 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content') } });
+		$("#resetscorebutton").click(function(event){
+			var id = 1;
+			var url = "{{URL('/resetScoreBoard')}}";
+	      	var dltUrl = url+"/"+id;
+	      	
+			$.ajax({
+	            url: dltUrl,
+	            type:'POST',
+	            data: { },
+	            headers: {
+			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			    },
+			})
+		});
+	});
 </script>
 
 <script>
@@ -220,6 +243,8 @@
 	let guestfoulsfield= document.getElementById('itisguestfouls');
 	let possfield= document.getElementById('itisposs');
 	let bonusfield= document.getElementById('itisbonus');
+	let buzzerfield= document.getElementById('buzzeer');
+	const countdownEl= document.getElementById('timer');
 
 
     if(typeof(EventSource) !== "undefined") {
@@ -256,6 +281,8 @@
 			        else{
 			         	$("#noneposshome").css("display","block");
 			         	$("#nonepossguest").css("display","block");
+			         	$("#posshome").css("display","none");
+			         	$("#possguest").css("display","none");
 			        }
 			    }
 			    function displaybonus(){
@@ -276,6 +303,8 @@
 	                else  {
 	                	$("#nonebonushome").css("display","block");
 	                	$("#nonebonusguest").css("display","block");
+	                	$("#bonushome").css("display","none");
+	                	$("#bonusguest").css("display","none");
 	                }
 			    }
                 
@@ -305,6 +334,7 @@
 	            valueguestfouls=guestfoulsfield.innerHTML;
 	            if (valueguestfouls<0) {
 	            	valueguestfouls=0;
+	            	guestfoulsfield.innerHTML = 0;
 	            }
 	            var id = 1;
 				var url = "{{URL('/editScoreboardEvent')}}";
@@ -322,6 +352,8 @@
 						periode:periodefield.innerHTML,
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -340,6 +372,7 @@
 	            valueguestfouls=guestfoulsfield.innerHTML;
 	            if (valueguestfouls>=6 ) {
 	            	valueguestfouls=6;
+	            	guestfoulsfield.innerHTML = 6;
 	            }
 	            var id = 1;
 				var url = "{{URL('/editScoreboardEvent')}}";
@@ -357,6 +390,8 @@
 						periode:periodefield.innerHTML,
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -375,6 +410,7 @@
 	            valueguestscores=guestscoresfield.innerHTML;
 	            if (valueguestscores<0 ) {
 	            	valueguestscores=0;
+	            	guestscoresfield.innerHTML = 0;
 	            }
 	            var id = 1;
 				var url = "{{URL('/editScoreboardEvent')}}";
@@ -392,6 +428,8 @@
 						periode:periodefield.innerHTML,
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -410,6 +448,7 @@
 	            valueguestscores=guestscoresfield.innerHTML;
 	            if (valueguestscores<0 ) {
 	            	valueguestscores=0;
+	            	guestscoresfield.innerHTML = 0;
 	            }
 	            var id = 1;
 				var url = "{{URL('/editScoreboardEvent')}}";
@@ -427,6 +466,8 @@
 						periode:periodefield.innerHTML,
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -445,6 +486,7 @@
 	            valueguestscores=guestscoresfield.innerHTML;
 	            if (valueguestscores<0 ) {
 	            	valueguestscores=0;
+	            	guestscoresfield.innerHTML = 0;
 	            }
 	            var id = 1;
 				var url = "{{URL('/editScoreboardEvent')}}";
@@ -462,6 +504,8 @@
 						periode:periodefield.innerHTML,
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -480,6 +524,7 @@
 	            valueguestscores=guestscoresfield.innerHTML;
 	            if (valueguestscores<0 ) {
 	            	valueguestscores=0;
+	            	guestscoresfield.innerHTML = 0;
 	            }
 	            var id = 1;
 				var url = "{{URL('/editScoreboardEvent')}}";
@@ -497,6 +542,8 @@
 						periode:periodefield.innerHTML,
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -515,6 +562,7 @@
 	            valueperiode=periodefield.innerHTML;
 	            if (valueperiode<0 ) {
 	            	valueperiode=0;
+	            	periodefield.innerHTML = 0;
 	            }
 	            var id = 1;
 				var url = "{{URL('/editScoreboardEvent')}}";
@@ -532,6 +580,8 @@
 						periode:valueperiode,
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -550,6 +600,7 @@
 	            valueperiode=periodefield.innerHTML;
 	            if (valueperiode<0 ) {
 	            	valueperiode=0;
+	            	periodefield.innerHTML = 0;
 	            }
 	            var id = 1;
 				var url = "{{URL('/editScoreboardEvent')}}";
@@ -567,6 +618,8 @@
 						periode:valueperiode,
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -585,6 +638,7 @@
 	            valuehomefouls=homefoulsfield.innerHTML;
 	            if (valuehomefouls<0) {
 	            	valuehomefouls=0;
+	            	homefoulsfield.innerHTML = 0;
 	            }
 	            var id = 1;
 				var url = "{{URL('/editScoreboardEvent')}}";
@@ -602,6 +656,8 @@
 						periode:periodefield.innerHTML,
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -620,6 +676,7 @@
 	            valuehomefouls=homefoulsfield.innerHTML;
 	            if (valuehomefouls>=6) {
 	            	valuehomefouls=6;
+	            	homefoulsfield.innerHTML = 6;
 	            }
 	            var id = 1;
 				var url = "{{URL('/editScoreboardEvent')}}";
@@ -637,6 +694,8 @@
 						periode:periodefield.innerHTML,
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -655,6 +714,7 @@
 	            valuehomescores=homescoresfield.innerHTML;
 	            if (valuehomescores<0) {
 	            	valuehomescores=0;
+	            	homescoresfield.innerHTML = 0;
 	            }
 	            var id = 1;
 				var url = "{{URL('/editScoreboardEvent')}}";
@@ -672,6 +732,8 @@
 						periode:periodefield.innerHTML,
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -690,6 +752,7 @@
 	            valuehomescores=homescoresfield.innerHTML;
 	            if (valuehomescores<0) {
 	            	valuehomescores=0;
+	            	homescoresfield.innerHTML = 0;
 	            }
 	            var id = 1;
 				var url = "{{URL('/editScoreboardEvent')}}";
@@ -707,6 +770,8 @@
 						periode:periodefield.innerHTML,
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -725,6 +790,7 @@
 	            valuehomescores=homescoresfield.innerHTML;
 	            if (valuehomescores<0) {
 	            	valuehomescores=0;
+	            	homescoresfield.innerHTML = 0;
 	            }
 	            var id = 1;
 				var url = "{{URL('/editScoreboardEvent')}}";
@@ -742,6 +808,8 @@
 						periode:periodefield.innerHTML,
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -760,6 +828,7 @@
 	            valuehomescores=homescoresfield.innerHTML;
 	            if (valuehomescores<0) {
 	            	valuehomescores=0;
+	            	homescoresfield.innerHTML = 0;
 	            }
 	            var id = 1;
 				var url = "{{URL('/editScoreboardEvent')}}";
@@ -777,6 +846,8 @@
 						periode:periodefield.innerHTML,
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -809,7 +880,9 @@
 						guestfouls:guestfoulsfield.innerHTML,
 						periode:periodefield.innerHTML,
 						poss:valueposs,
-						bonus:bonusfield.innerHTML
+						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -842,7 +915,9 @@
 						guestfouls:guestfoulsfield.innerHTML,
 						periode:periodefield.innerHTML,
 						poss:valueposs,
-						bonus:bonusfield.innerHTML
+						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -875,7 +950,9 @@
 						guestfouls:guestfoulsfield.innerHTML,
 						periode:periodefield.innerHTML,
 						poss:possfield.innerHTML,
-						bonus:valuebonus
+						bonus:valuebonus,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -909,6 +986,8 @@
 						periode:periodefield.innerHTML,
 						poss:possfield.innerHTML,
 						bonus:valuebonus,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -918,18 +997,15 @@
 	    });
 	});
     
-</script>
 
-<script type="text/javascript">
 
 	const startingMinutes = 10;
 	let time = startingMinutes * 60;
 
-	const countdownEl= document.getElementById('timer');
-
 	function setupTimer(){
 		//calling update every 1 sec
 		timer=setInterval(updateCountDown,1000);
+
 	}
 		
 	function updateCountDown(){
@@ -941,12 +1017,12 @@
 		countdownEl.innerHTML = `${minutes}:${seconds}`;
 		time = time < 0 ? 0 : time; 
 
-		
 		// if (time == 0) {
 		// 	setInterval(function(){
 		// 		new Audio("Buzzer-sports-arena.mp3").play();
 		// 	}, 1000);
 		// };
+		
 
 		$.ajaxSetup({ headers: { 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content') } });
 		valuecountdown=countdownEl.innerHTML;
@@ -968,6 +1044,7 @@
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
 						count:valuecountdown,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -977,6 +1054,33 @@
 
 	$("#stop").click(function(){
 	    clearInterval(timer);
+
+	    $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content') } });
+		valuecountdown=countdownEl.innerHTML;
+	            
+	            var id = 1;
+				var url = "{{URL('/editScoreboardEvent')}}";
+		      	var dltUrl = url+"/"+id;
+				$.ajax({
+		            url: dltUrl,
+		            type:'POST',
+		            data: {
+		            	homename:homefield.innerHTML,
+		            	guestname:guestfield.innerHTML,
+		            	homescores:homescoresfield.innerHTML,
+						guestscores:guestscoresfield.innerHTML,
+						homefouls:homefoulsfield.innerHTML,
+						guestfouls:guestfoulsfield.innerHTML,
+						periode:periodefield.innerHTML,
+						poss:possfield.innerHTML,
+						bonus:bonusfield.innerHTML,
+						count:valuecountdown,
+						sound:buzzerfield.innerHTML,
+		            },
+					headers: {
+			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			        },		      
+				})
 	});
 
 	$("#reset").click(function(){
@@ -984,6 +1088,33 @@
 	   seconds = time % 60;
 	   seconds = seconds < 10 ? '0' + seconds : seconds;
 	   countdownEl.innerHTML = `${10}:${seconds}`;
+
+	   $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content') } });
+		valuecountdown=countdownEl.innerHTML;
+	            
+	            var id = 1;
+				var url = "{{URL('/editScoreboardEvent')}}";
+		      	var dltUrl = url+"/"+id;
+				$.ajax({
+		            url: dltUrl,
+		            type:'POST',
+		            data: {
+		            	homename:homefield.innerHTML,
+		            	guestname:guestfield.innerHTML,
+		            	homescores:homescoresfield.innerHTML,
+						guestscores:guestscoresfield.innerHTML,
+						homefouls:homefoulsfield.innerHTML,
+						guestfouls:guestfoulsfield.innerHTML,
+						periode:periodefield.innerHTML,
+						poss:possfield.innerHTML,
+						bonus:bonusfield.innerHTML,
+						count:valuecountdown,
+						sound:buzzerfield.innerHTML,
+		            },
+					headers: {
+			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			        },		      
+				})
 	});
 
 	$("#minsixty").click(function(){
@@ -996,6 +1127,62 @@
 		countdownEl.innerHTML = `${minutes}:${seconds}`;
 		time = time < 0 ? 0 : time; 
 	});
+
+	$("#minten").click(function(){
+		time=time-10;
+	   	minutes = Math.floor(time/60);
+	   	seconds = time % 60;
+		//add zero 
+		seconds = seconds < 10 ? '0' + seconds : seconds;
+		time--;
+		countdownEl.innerHTML = `${minutes}:${seconds}`;
+		time = time < 0 ? 0 : time; 
+	});
+
+	$("#minone").click(function(){
+		time=time-1;
+	   	minutes = Math.floor(time/60);
+	   	seconds = time % 60;
+		//add zero 
+		seconds = seconds < 10 ? '0' + seconds : seconds;
+		time--;
+		countdownEl.innerHTML = `${minutes}:${seconds}`;
+		time = time < 0 ? 0 : time; 
+	});
+
+	$("#plusone").click(function(){
+		time=time+1;
+	   	minutes = Math.floor(time/60);
+	   	seconds = time % 60;
+		//add zero 
+		seconds = seconds < 10 ? '0' + seconds : seconds;
+		time--;
+		countdownEl.innerHTML = `${minutes}:${seconds}`;
+		time = time < 0 ? 0 : time; 
+	});
+
+	$("#plusten").click(function(){
+		time=time+10;
+	   	minutes = Math.floor(time/60);
+	   	seconds = time % 60;
+		//add zero 
+		seconds = seconds < 10 ? '0' + seconds : seconds;
+		time--;
+		countdownEl.innerHTML = `${minutes}:${seconds}`;
+		time = time < 0 ? 0 : time; 
+	});
+
+	$("#plussixty").click(function(){
+		time=time+60;
+	   	minutes = Math.floor(time/60);
+	   	seconds = time % 60;
+		//add zero 
+		seconds = seconds < 10 ? '0' + seconds : seconds;
+		time--;
+		countdownEl.innerHTML = `${minutes}:${seconds}`;
+		time = time < 0 ? 0 : time; 
+	});
+
 
 	$(document).ready(function() {
     	$.ajaxSetup({ headers: { 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content') } });
@@ -1021,6 +1208,7 @@
 						poss:possfield.innerHTML,
 						bonus:bonusfield.innerHTML,
 						count:valuecountdown,
+						sound:buzzerfield.innerHTML,
 		            },
 					headers: {
 			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1030,8 +1218,51 @@
 	    });
 	});
 	
-	$("#buzzer").click(function(){
-	   new Audio("Buzzer-sports-arena.mp3").play();
+	// $("#buzzer").click(function(){
+	//    new Audio("Buzzer-sports-arena.mp3").play();
+	// });
+
+	$(document).ready(function() {
+    	$.ajaxSetup({ headers: { 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content') } });
+		$('#buzzer').on('click', function(){
+			console.log('START STOP BUZZER');
+
+
+				if(buzzerfield.innerHTML == 1){
+					buzzerfield.innerHTML = 0;
+	            	valuebuzzer=buzzerfield.innerHTML;
+				}
+				else{
+					buzzerfield.innerHTML = 1;
+	            	valuebuzzer=buzzerfield.innerHTML;
+				}
+	            
+	            
+	            var id = 1;
+				var url = "{{URL('/editScoreboardEvent')}}";
+		      	var dltUrl = url+"/"+id;
+				$.ajax({
+		            url: dltUrl,
+		            type:'POST',
+		            data: {
+		            	homename:homefield.innerHTML,
+		            	guestname:guestfield.innerHTML,
+		            	homescores:homescoresfield.innerHTML,
+						guestscores:guestscoresfield.innerHTML,
+						homefouls:homefoulsfield.innerHTML,
+						guestfouls:guestfoulsfield.innerHTML,
+						periode:periodefield.innerHTML,
+						poss:possfield.innerHTML,
+						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:valuebuzzer,
+		            },
+					headers: {
+			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			        },		      
+				})
+	        
+	    });
 	});
 
 </script>

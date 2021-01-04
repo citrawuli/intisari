@@ -59,6 +59,38 @@ class Scoreboard extends Controller
 	            'poss' => $request->input('poss'),
 	            'bonus' => $request->input('bonus'),
 	          	'countdown' => $request->input('count'),
+	          	'sound' => $request->input('sound'),
+	        	]
+        );
+	}
+
+	public function resetscoreboard($id){
+		$homename="Home";
+		$guestname="Guest";
+		$homescores="0";
+		$guestscores="0";
+		$homefouls="0";
+		$guestfouls="0";
+		$periode="0";
+		$poss="2";
+		$bonus="2";
+		$countdown="0";
+		$sound="0";
+		
+        DB::table('scoreboard')  
+            ->where('id_scoreboard', $id)
+            ->update(
+                ['home_name'=> $homename,
+	            'guest_name' => $guestname,
+	            'home_scores' => $homescores,
+	            'guest_scores' => $guestscores,
+	            'home_fouls' => $homefouls,
+	            'guest_fouls' => $guestfouls,
+	            'period' => $periode,
+	            'poss' => $poss,
+	            'bonus' => $bonus,
+	          	'countdown' => $countdown,
+	          	'sound' => $sound
 	        	]
         );
 	}
