@@ -77,3 +77,4 @@ Route::get('/theScoreboardController', 'Scoreboard@viewscoreboardcontroller'); /
 Route::post('/editScoreBoard/{id}', 'Scoreboard@editscoreboard');//post form to DB, add new scoreboard
 Route::get('/getScoreBoard', 'Scoreboard@getscoreboard'); //AJAX
 Route::post('/editScoreboardEvent/{id}', 'Scoreboard@editscoreboardevent'); //AJAX
+Route::post('/resetScoreBoard/{id}', 'Scoreboard@resetscoreboard'); //AJAX

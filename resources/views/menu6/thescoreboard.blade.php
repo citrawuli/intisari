@@ -16,6 +16,9 @@
     	<div class="card-body">
       	<h1><CENTER>THE SCOREBOARD<CENTER></h1><br><br><br>
 	      	<div class="row">
+	      			
+
+	      			<p class="card-title" id="buzzer" hidden="">0</p>
 
 		      		<div class="card text-dark mb-3" style="max-width: 18rem; margin-left: 12%; margin-right: 50px;width:100%">
 						<div class="card-header text-danger bg-dark mb-3" style="font-weight:bold;"><CENTER><h4 id="itishomename">HOME</h4></CENTER></div>
@@ -118,6 +121,7 @@
                 //TAMBAHAN
                 displayposs();
                 displaybonus();
+                displaysound();
                 function displayposs(){
 			    	if(`${data[0]['poss']}` == 0){
 			            $("#posshome").css("display","block");
@@ -135,6 +139,8 @@
 			        else{
 			         	$("#noneposshome").css("display","block");
 			         	$("#nonepossguest").css("display","block");
+			         	$("#posshome").css("display","none");
+			         	$("#possguest").css("display","none");
 			        }
 			    }
 			    function displaybonus(){
@@ -155,7 +161,16 @@
 	                else  {
 	                	$("#nonebonushome").css("display","block");
 	                	$("#nonebonusguest").css("display","block");
+	                	$("#bonushome").css("display","none");
+	                	$("#bonusguest").css("display","none");
 	                }
+			    }
+
+			    function displaysound(){
+			    	if(`${data[0]['sound']}` == 1){
+						new Audio("Buzzer-sports-arena.mp3").play();
+	                }
+	                
 			    }
                 
                 
