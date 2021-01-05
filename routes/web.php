@@ -74,7 +74,7 @@ Route::post('/import', 'MyController@import')->name('import');
 
 Route::get('/theScoreboard', 'Scoreboard@viewscoreboard'); // View Scoreboard
 Route::get('/theScoreboardController', 'Scoreboard@viewscoreboardcontroller'); // View Scoreboard Controller
-Route::post('/editScoreBoard/{id}', 'Scoreboard@editscoreboard');//post form to DB, add new scoreboard
-Route::get('/getScoreBoard', 'Scoreboard@getscoreboard'); //AJAX
-Route::post('/editScoreboardEvent/{id}', 'Scoreboard@editscoreboardevent'); //AJAX
-Route::post('/resetScoreBoard/{id}', 'Scoreboard@resetscoreboard'); //AJAX
+Route::post('/editScoreBoard/{id}', 'Scoreboard@editscoreboard');// AJAX post edit form to DB, add new scoreboard
+Route::get('/getScoreBoard', 'Scoreboard@getscoreboard'); //SSE
+Route::post('/editScoreboardEvent/{id}', 'Scoreboard@editscoreboardevent'); //AJAX update
+Route::post('/resetScoreBoard/{id}', 'Scoreboard@resetscoreboard'); //AJAX reset
