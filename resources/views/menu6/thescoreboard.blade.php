@@ -127,13 +127,16 @@
 			            $("#posshome").css("display","block");
 			            $("#possguest").css("display","none");
 			            $("#noneposshome").css("display","none");
-			            $("#nonepossguest").css("display","block")
+			            $("#nonepossguest").css("display","block");
+			            $("#resetposs").css("display","block");
+
 			        }
 			        else if(`${data[0]['poss']}` == 1){
 			         	$("#posshome").css("display","none");
 			         	$("#possguest").css("display","block");
 			         	$("#noneposshome").css("display","block");
 			         	$("#nonepossguest").css("display","none");
+			         	$("#resetposs").css("display","block");
 			                	
 			        }
 			        else{
@@ -141,6 +144,7 @@
 			         	$("#nonepossguest").css("display","block");
 			         	$("#posshome").css("display","none");
 			         	$("#possguest").css("display","none");
+			         	$("#resetposs").css("display","none");
 			        }
 			    }
 			    function displaybonus(){
@@ -149,20 +153,21 @@
 	                	$("#bonusguest").css("display","none");
 	                	$("#nonebonushome").css("display","none");
 	                	$("#nonebonusguest").css("display","block");
-	                	
+	                	$("#resetbonus").css("display","block");
 	                }
 	                else if(`${data[0]['bonus']}` == 1){
 	                	$("#bonushome").css("display","none");
 	                	$("#bonusguest").css("display","block");
 	                	$("#nonebonushome").css("display","block");
 	                	$("#nonebonusguest").css("display","none");
-	                	
+	                	$("#resetbonus").css("display","block");
 	                }
 	                else  {
 	                	$("#nonebonushome").css("display","block");
 	                	$("#nonebonusguest").css("display","block");
 	                	$("#bonushome").css("display","none");
 	                	$("#bonusguest").css("display","none");
+	                	$("#resetbonus").css("display","none");
 	                }
 			    }
 

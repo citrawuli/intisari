@@ -22,7 +22,6 @@
 
       		<div class="headscore">
       			<center>
-
       				<button type="button" class="btn btn btn-outline-success btn-lg mb-3" data-toggle="modal" data-target="#exampleModalCenter">
       					<i class="fa fa-pencil" style="font-size: 20px;margin-right: 5px"></i> EDIT SCOREBOARD
       				</button>
@@ -37,7 +36,6 @@
                                    <div class="modal-body">
 
                                        <form class="needs-validation" novalidate="" id="formedit">
-                                       		
                                        		
                                             <div class="form-row">
                                                 <div class="col-md-6 mb-3">
@@ -60,10 +58,8 @@
 	                                                    Please provide a guest name.
 	                                                </div>
                                                 </div>
-                                       
                                             </div>
                                             <div class="form-row">
-                                            	
                                             		<div class="col-md-12 mb-3">
 	                                                    <label for="periode"><strong>Periode</strong></label>
 	                                                    <input type="number" min="1" class="form-control @error('periode') is-invalid @enderror" id="periode" name="periode" placeholder="Period" required="">
@@ -71,7 +67,6 @@
 	                                                        Please provide a valid period.
 	                                                    </div>
                                                 	</div>
-                                            	
                                             </div>
                                              
                                             <button class="btn btn-primary" type="button" id="submitscorebutton">Submit form</button>
@@ -79,7 +74,7 @@
                                    </div>
                                </div>
                            </div>
-                       </div>
+                        </div>
 
 	      			<button type="button" class="btn btn btn-outline-warning btn-lg mb-3" id="buzzer" > 
 	      				<p class="card-title" id="buzzeer" hidden="">0</p>
@@ -150,6 +145,8 @@
 							    
 							    <i class="fa fa-arrow-circle-left possdata" style="text-shadow: 1px 1px 1px black;color:whitesmoke;font-size: 50px;" id="posshome"><span style="font-size: 35px; margin-left: 10px;">Left Turn</span></i>
 							    <i class="fa fa-arrow-circle-right possdata"style="text-shadow: 1px 1px 1px black;color:whitesmoke;font-size: 50px;" id="possguest"><span style="font-size: 35px; margin-left: 10px;">Right Turn</span></i>
+
+							    <i class="fa fa-refresh possdata" style="text-shadow: 1px 1px 1px black;color:red;font-size: 30px;" id="resetposs"><span style="font-size: 30px; margin-left: 10px;">reset</span></i>
 							</div>
 
 							<div class="card-body text-center text-dark bg-warning mb-3">
@@ -160,6 +157,7 @@
 							    
 							    <i class="fa fa-arrow-circle-left bonusdata" style="text-shadow: 1px 1px 1px black;color:whitesmoke;font-size: 50px;" id="bonushome"><span style="font-size: 35px; margin-left: 10px;">Left Turn</span></i>
 							    <i class="fa fa-arrow-circle-right bonusdata"style="text-shadow: 1px 1px 1px black;color:whitesmoke;font-size: 50px;" id="bonusguest"><span style="font-size: 35px; margin-left: 10px;">Right Turn</span></i>
+							    <i class="fa fa-refresh bonusdata" style="text-shadow: 1px 1px 1px black;color:red;font-size: 30px;" id="resetbonus"><span style="font-size: 30px; margin-left: 10px;">reset</span></i>
 							</div>
 							
 						</div>
@@ -186,7 +184,6 @@
 
 					</div>
 
-				
 	      	</div>
       	</div>
     </div>
@@ -269,13 +266,16 @@
 			            $("#posshome").css("display","block");
 			            $("#possguest").css("display","none");
 			            $("#noneposshome").css("display","none");
-			            $("#nonepossguest").css("display","block")
+			            $("#nonepossguest").css("display","block");
+			            $("#resetposs").css("display","block");
+
 			        }
 			        else if(`${data[0]['poss']}` == 1){
 			         	$("#posshome").css("display","none");
 			         	$("#possguest").css("display","block");
 			         	$("#noneposshome").css("display","block");
 			         	$("#nonepossguest").css("display","none");
+			         	$("#resetposs").css("display","block");
 			                	
 			        }
 			        else{
@@ -283,6 +283,7 @@
 			         	$("#nonepossguest").css("display","block");
 			         	$("#posshome").css("display","none");
 			         	$("#possguest").css("display","none");
+			         	$("#resetposs").css("display","none");
 			        }
 			    }
 			    function displaybonus(){
@@ -291,20 +292,21 @@
 	                	$("#bonusguest").css("display","none");
 	                	$("#nonebonushome").css("display","none");
 	                	$("#nonebonusguest").css("display","block");
-	                	
+	                	$("#resetbonus").css("display","block");
 	                }
 	                else if(`${data[0]['bonus']}` == 1){
 	                	$("#bonushome").css("display","none");
 	                	$("#bonusguest").css("display","block");
 	                	$("#nonebonushome").css("display","block");
 	                	$("#nonebonusguest").css("display","none");
-	                	
+	                	$("#resetbonus").css("display","block");
 	                }
 	                else  {
 	                	$("#nonebonushome").css("display","block");
 	                	$("#nonebonusguest").css("display","block");
 	                	$("#bonushome").css("display","none");
 	                	$("#bonusguest").css("display","none");
+	                	$("#resetbonus").css("display","none");
 	                }
 			    }
                 
@@ -998,6 +1000,76 @@
 	});
     
 
+    $(document).ready(function() {
+    	$.ajaxSetup({ headers: { 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content') } });
+		$('#resetposs').on('click', function(){
+			console.log('RESET POSS');
+
+	            possfield.innerHTML = 2;
+	            valueposs=possfield.innerHTML;
+	            
+	            var id = 1;
+				var url = "{{URL('/editScoreboardEvent')}}";
+		      	var dltUrl = url+"/"+id;
+				$.ajax({
+		            url: dltUrl,
+		            type:'POST',
+		            data: {
+		            	homename:homefield.innerHTML,
+		            	guestname:guestfield.innerHTML,
+		            	homescores:homescoresfield.innerHTML,
+						guestscores:guestscoresfield.innerHTML,
+						homefouls:homefoulsfield.innerHTML,
+						guestfouls:guestfoulsfield.innerHTML,
+						periode:periodefield.innerHTML,
+						poss:valueposs,
+						bonus:bonusfield.innerHTML,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
+		            },
+					headers: {
+			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			        },		      
+				})
+	        
+	    });
+	});
+
+	$(document).ready(function() {
+    	$.ajaxSetup({ headers: { 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content') } });
+		$('#resetbonus').on('click', function(){
+			console.log('RESET BONUS');
+
+	            bonusfield.innerHTML = 2;
+	            valuebonus=bonusfield.innerHTML;
+	            
+	            var id = 1;
+				var url = "{{URL('/editScoreboardEvent')}}";
+		      	var dltUrl = url+"/"+id;
+				$.ajax({
+		            url: dltUrl,
+		            type:'POST',
+		            data: {
+		            	homename:homefield.innerHTML,
+		            	guestname:guestfield.innerHTML,
+		            	homescores:homescoresfield.innerHTML,
+						guestscores:guestscoresfield.innerHTML,
+						homefouls:homefoulsfield.innerHTML,
+						guestfouls:guestfoulsfield.innerHTML,
+						periode:periodefield.innerHTML,
+						poss:possfield.innerHTML,
+						bonus:valuebonus,
+						count:countdownEl.innerHTML,
+						sound:buzzerfield.innerHTML,
+		            },
+					headers: {
+			          	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			        },		      
+				})
+	        
+	    });
+	});
+
 
 	const startingMinutes = 10;
 	let time = startingMinutes * 60;
@@ -1264,8 +1336,5 @@
 	        
 	    });
 	});
-
 </script>
-
-
 @endsection
